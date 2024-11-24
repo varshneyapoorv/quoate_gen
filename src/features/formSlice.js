@@ -11,8 +11,14 @@ const initialState = {
     caseStudies: false,
     clientReferences: false,
     profiles: false,
+    goals : false,
   },
-  formData: {},
+  formData: {
+    goals : {
+      goals_objectives : '',
+      
+    },
+  },
 };
 
 const formSlice = createSlice({

@@ -58,7 +58,7 @@ const Header = () => {
           )}
         </div>
         <br />
-        {/* Short Project Name */}Contact Person Name is required
+        {/* Short Project Name */}
 
         <div className="mt-2">
           <label className="block text-sm font-medium">Short Project Name :</label>
