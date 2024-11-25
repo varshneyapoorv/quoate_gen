@@ -15,6 +15,14 @@ const Client = () => {
             pattern: {
               value: /^[0-9]+$/,  // Regex to ensure only numbers are entered
               message: "Please enter a valid reference number (only numbers allowed)"
+            },
+            minLength: {
+              value: 6,
+              message: "Client Reference Number must be at least 6 digits"
+            },
+            maxLength: {
+              value: 12,
+              message: "Client Reference Number cannot exceed 12 digits"
             }
           })}
           placeholder="Enter Client Reference Number"

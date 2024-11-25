@@ -15,7 +15,10 @@ const TechStack = () => {
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-2">Tech Stack</h3>
         <input
-          {...register("techStack.title", { required: "Title is required" })}
+          {...register("techStack.title", { 
+            required: "Title is required",
+            onBlur: () => trigger("techStack.title"), // Trigger validation on blur
+          })}
           placeholder="Enter Tech Stack Title"
           className="border px-2 py-1 w-full"
         />
@@ -28,7 +31,10 @@ const TechStack = () => {
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-2">Details</h3>
         <textarea
-          {...register("techStack.details", { required: "Details are required" })}
+          {...register("techStack.details", {
+            required: "Details are required",
+            onBlur: () => trigger("techStack.details"), // Trigger validation on blur
+          })}
           placeholder="Enter details about the tech stack"
           className="border px-2 py-1 w-full"
           rows={3}
@@ -81,6 +87,7 @@ const TechStack = () => {
                   <input
                     {...register(`techStack.technologies.${index}.name`, {
                       required: "Name is required",
+                      onBlur: () => trigger(`techStack.technologies.${index}.name`), // Validate on blur
                     })}
                     placeholder="Technology Name"
                     defaultValue={field.name}
@@ -98,6 +105,7 @@ const TechStack = () => {
                   <textarea
                     {...register(`techStack.technologies.${index}.details`, {
                       required: "Details are required",
+                      onBlur: () => trigger(`techStack.technologies.${index}.details`), // Validate on blur
                     })}
                     placeholder="Technology Details"
                     defaultValue={field.details}

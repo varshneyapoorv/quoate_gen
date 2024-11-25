@@ -136,7 +136,10 @@ const SprintTable = () => {
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-2">a. Title</h3>
         <input
-          {...register("phases.title", { required: "Title is required" })}
+          {...register("phases.title", { 
+            required: "Title is required",
+            maxLength: { value: 100, message: "Title should not exceed 100 characters" }
+          })}
           placeholder="Enter phase title"
           className="border px-2 py-1 w-full"
         />
@@ -149,7 +152,10 @@ const SprintTable = () => {
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-2">b. Objective</h3>
         <textarea
-          {...register("phases.objective", { required: "Objective is required" })}
+          {...register("phases.objective", { 
+            required: "Objective is required",
+            minLength: { value: 20, message: "Objective must be at least 20 characters" }
+          })}
           placeholder="Enter phase objective"
           className="border px-2 py-1 w-full"
           rows={3}
@@ -198,6 +204,7 @@ const SprintTable = () => {
                   <input
                     {...register(`phases.sprints.${index}.description`, {
                       required: "Description is required",
+                      minLength: { value: 10, message: "Description must be at least 10 characters" }
                     })}
                     defaultValue={field.description}
                     className="border px-2 py-1 w-full"
@@ -214,6 +221,7 @@ const SprintTable = () => {
                   <input
                     {...register(`phases.sprints.${index}.category`, {
                       required: "Category is required",
+                      maxLength: { value: 50, message: "Category should not exceed 50 characters" }
                     })}
                     defaultValue={field.category}
                     className="border px-2 py-1 w-full"
@@ -230,6 +238,7 @@ const SprintTable = () => {
                   <textarea
                     {...register(`phases.sprints.${index}.keyDeliverables`, {
                       required: "Key Deliverables are required",
+                      minLength: { value: 20, message: "Key Deliverables must be at least 20 characters" }
                     })}
                     defaultValue={field.keyDeliverables}
                     className="border px-2 py-1 w-full"
@@ -264,6 +273,7 @@ const SprintTable = () => {
         <textarea
           {...register("phases.keyDeliverables", {
             required: "Key Deliverables summary is required",
+            minLength: { value: 20, message: "Summary must be at least 20 characters" }
           })}
           placeholder="Enter overall key deliverables"
           className="border px-2 py-1 w-full"
@@ -278,4 +288,3 @@ const SprintTable = () => {
 };
 
 export default SprintTable;
-
