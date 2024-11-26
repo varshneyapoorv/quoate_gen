@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useFormContext } from "react-hook-form";
+import axios from 'axios'; // Import axios
+
 
 const Goals = () => {
   const { setValue, trigger, formState: { errors }, register } = useFormContext();
-  const [editorContent, setEditorContent] = useState(""); // State to hold content for the editor
+  const [editorContent, setEditorContent] = useState("");
   const [isTextEditorVisible, setIsTextEditorVisible] = useState(false); // State to control visibility of text editor popup
   const [normalTextContent, setNormalTextContent] = useState(""); // State to hold content from normal text editor
+  const [loading, setLoading] = useState(false);
+  // comst [response, setResponce = useState(false)];
 
   // Register the goals field with validation
   register("goals.goals_objectives", {
-    required: "Goals and Objectives are required",
+    required: "Goals and Objectives are robjectequired",
     minLength: {
       value: 20,
       message: "Goals and Objectives must be at least 20 characters long",
@@ -23,13 +27,45 @@ const Goals = () => {
     setNormalTextContent(e.target.value); // Update the normal text editor content
   };
 
-  // Handle saving content from normal text editor
-  const handleSaveTextEditorContent = () => {
-    setEditorContent(normalTextContent); // Set content for CKEditor in HTML format
-    setIsTextEditorVisible(false); // Close the normal text editor popup
-    setValue("goals.goals_objectives", normalTextContent); // Save content into form field
-    trigger("goals.goals_objectives"); // Trigger validation
+  // Handle saving content from normal text editor with API call
+
+  const handleSaveTextEditorContent = async () => {
+    setLoading(true);
+    try {
+      // Make API call using axios
+      const response = await axios.post(
+        "https://bt6sm1bk-4000.inc1.devtunnels.ms/api/v1/format-to-html",
+        { text: normalTextContent }, // Request body as plain JavaScript object
+        {
+          headers: {
+            "Content-Type": "application/json", // Content type set to JSON
+          },
+        }
+      );
+      
+      console.log(response); // Log the entire response
+  
+      if (response.status !== 200) {
+        // Check if the status code is not 200 (OK), throw error
+        throw new Error("Failed to format content");
+      }
+  
+      const { formattedContent } = response.data; // Get the formatted content from the response data
+      console.log(formattedContent); // Log the formatted content
+  
+      // Set the formatted content to the editor and form state
+      setEditorContent(formattedContent);
+      setValue("goals.goals_objectives", formattedContent);
+      trigger("goals.goals_objectives");
+      setIsTextEditorVisible(false); // Close the normal text editor popup
+    } catch (error) {
+      console.error("Error formatting content:", error);
+      alert("Failed to save and format the content. Please try again.");
+    } finally {
+      setLoading(false); // Reset loading state
+    }
   };
+  
 
   // Handle canceling the editing of normal text editor
   const handleCancelTextEditor = () => {
@@ -67,7 +103,7 @@ const Goals = () => {
       {/* Show the normal text editor popup */}
       {isTextEditorVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/2 py-20"> {/* Increased py-20 for popup height */}
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/2 py-20">
             <h3 className="text-xl font-bold mb-4">Edit Goals and Objectives (Text Editor)</h3>
 
             {/* Normal text editor (textarea) inside popup */}
@@ -82,8 +118,9 @@ const Goals = () => {
               <button
                 onClick={handleSaveTextEditorContent} // Save content to CKEditor
                 className="bg-blue-500 text-white px-4 py-2 rounded"
+                disabled={loading}
               >
-                Save
+                {loading ? "Saving..." : "Save"}
               </button>
               <button
                 onClick={handleCancelTextEditor} // Close the editor without saving
@@ -120,7 +157,7 @@ const Goals = () => {
                 "redo",
               ],
             }}
-            className="border px-2 py-9 w-full py-30" 
+            className="border px-2 py-9 w-full py-30"
           />
         </div>
       )}
