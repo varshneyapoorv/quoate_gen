@@ -18,6 +18,7 @@ import TeamStructure from "../components/team/Team";
 import Cost from "../components/cost/Cost";
 import Client from "../components/client/Client";
 import TSM from "../components/trainning_support/tsm";
+import Project from "../components/understanding/Project";
 
 const FormPage = () => {
   const methods = useForm({
@@ -46,8 +47,11 @@ const FormPage = () => {
         </FormSection>
 
         {/* Understandings */}
-        <FormSection sectionId="understandings" title="Project Understandings">
+        {/* <FormSection sectionId="understandings" title="Project Understandings">
           <Understanding />
+        </FormSection> */}
+        <FormSection sectionId="projects" title="Project Understandings">
+          <Project/>
         </FormSection>
 
         {/* Goals */}
