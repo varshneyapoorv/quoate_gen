@@ -131,7 +131,7 @@ const SprintTable = () => {
   });
 
   return (
-    <div className="border border-gray-300 p-4 rounded">
+    <div className="border border-gray-300 p-4 rounded mt-5">
       {/* Title Section */}
       <div className="mb-6">
         <h3 className="text-lg font-bold mb-2">a. Title</h3>
@@ -287,4 +287,13 @@ const SprintTable = () => {
   );
 };
 
-export default SprintTable;
+const GoalsAndObjectives = () => {
+  return (
+    <div className="border border-gray-300 p-6 rounded mt-6">
+      <h2 className="text-lg font-bold">Phases Table</h2>
+      <SprintTable />
+    </div>
+  );
+};
+
+export default GoalsAndObjectives;

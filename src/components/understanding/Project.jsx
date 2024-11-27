@@ -159,6 +159,8 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill's CSS for styling
+import axios from "axios";
+
 
 const Project = () => {
   const { setValue, trigger, formState: { errors }, register } = useFormContext();
@@ -178,11 +180,38 @@ const Project = () => {
   };
 
   // Save plain text content and display it in ReactQuill
-  const handleSaveTextEditorContent = () => {
-    setEditorContent(normalTextContent); // Set content for ReactQuill
-    setValue("project.project_understanding", normalTextContent); // Update form value
-    trigger("project.project_understanding"); // Trigger validation
-    setIsTextEditorVisible(false); // Close normal text editor
+  const handleSaveTextEditorContent = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://bt6sm1bk-4000.inc1.devtunnels.ms/api/v1/format-to-html",
+        { text: normalTextContent },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to format content");
+      }
+
+      const { html } = response.data;
+      setEditorContent(html);
+      setValue("project.project_understanding", html);
+      trigger("project.project_understanding");
+      setIsTextEditorVisible(false);
+    } catch (error) {
+      console.error("Error formatting content:", error);
+      alert("Failed to save and format the content. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+    // setEditorContent(normalTextContent); // Set content for ReactQuill
+    // setValue("project.project_understanding", normalTextContent); // Update form value
+    // trigger("project.project_understanding"); // Trigger validation
+    // setIsTextEditorVisible(false); // Close normal text editor
   };
 
   // Handle canceling the editing (close the editor)
@@ -206,7 +235,7 @@ const Project = () => {
       <button
         type="button"
         onClick={() => setIsTextEditorVisible(true)} // Open the normal text editor
-        className="mt-2 text-blue-500 border px-4 py-2 rounded"
+        className="mt-2 text-white border px-4 py-2 rounded"
       >
         Edit Project Understanding
       </button>
@@ -258,7 +287,7 @@ const Project = () => {
           <h3 className="text-lg font-bold">Project Understanding (HTML Editor):</h3>
 
           {/* ReactQuill editor for HTML content */}
-          <ReactQuill
+          <ReactQuill 
             value={editorContent} // Bind HTML content to the editor
             onChange={handleEditorChange} // Update content on change
             modules={{
@@ -273,7 +302,7 @@ const Project = () => {
                 ['undo', 'redo'],
               ],
             }}
-            className="border px-2 py-9 w-full py-30"
+            className="border px-2 py-3 w-full py-30 min-h-48"
           />
         </div>
       )}

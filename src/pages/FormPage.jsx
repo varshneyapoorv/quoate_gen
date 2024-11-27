@@ -4,7 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import "./FormPage.css";
 
 import FormSection from "../components/FormSection";
-import SprintTable from "../components/SprintTable";
+import SprintTable from "../components/goals/SprintTable";
 import ResourceTable from "../components/ResourceTable";
 import Header from "../components/header/Header";
 import Understanding from "../components/understanding/Understanding";
@@ -19,6 +19,7 @@ import Cost from "../components/cost/Cost";
 import Client from "../components/client/Client";
 import TSM from "../components/trainning_support/tsm";
 import Project from "../components/understanding/Project";
+import GoalsAndObjectives from "../components/goals/SprintTable";
 
 const FormPage = () => {
   const methods = useForm({
@@ -57,12 +58,13 @@ const FormPage = () => {
         {/* Goals */}
         <FormSection sectionId="goals" title="Goals & Objectives">
           <Goals />
+          {/* <GoalsAndObjectives/> */}
         </FormSection>
 
         {/* Sprint Table */}
-        <FormSection sectionId="phases" title="Phases Table">
+        {/* <FormSection sectionId="phases" title="Phases Table">
           <SprintTable />
-        </FormSection>
+        </FormSection> */}
 
         {/* Training, Support, Maintenance */}
         <FormSection sectionId="tsm" title="Training, Support, Maintenance">
